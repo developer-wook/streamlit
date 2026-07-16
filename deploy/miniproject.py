@@ -101,11 +101,18 @@ with left:
             history.append({"role": "assistant", "content": qa["answer"]})
 
         with st.status("답변 작성 중...", expanded=False) as status:
-            answer = "".join(ask(question, history, tone))
-            status.update(label="답변 완료", state="complete")
+            try:
+                answer = "".join(ask(question, history, tone))
+                status.update(label="답변 완료", state="complete")
+            except Exception:
+                status.update(label="오류 발생", state="error")
+                answer = None
 
-        st.session_state.qa_log.append({"question": question, "answer": answer})
-        st.rerun()
+        if answer is not None:
+            st.session_state.qa_log.append({"question": question, "answer": answer})
+            st.rerun()
+        else:
+            st.error("지금 응답을 가져오지 못했어요. 잠시 후 다시 시도해주세요.")
 
     if not st.session_state.qa_log:
         st.info("질문 하나 던져보세요.")
