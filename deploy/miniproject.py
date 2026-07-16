@@ -1,4 +1,4 @@
-# 실행: streamlit run apps/miniproject.py
+# 실행: streamlit run deploy/miniproject.py
 import streamlit as st
 from openai import OpenAI
 
